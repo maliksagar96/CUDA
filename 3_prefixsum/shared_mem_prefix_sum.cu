@@ -30,8 +30,7 @@ __global__ void shared_mem_prefix_sum(int* d_a, int* d_prefix_sum, int n) {
         int val = 0;
         if (tid >= stride)
             val = temp[tid - stride];
-
-        __syncthreads();
+        __syncthreads();    //Suppose temp[2] got updated before the next line. Will cause wrong results. 
         temp[tid] += val;
         __syncthreads();
     }
