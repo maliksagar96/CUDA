@@ -1,0 +1,1 @@
+-I"/usr/include/vtk-7.1" -I/usr/include/freetype2 -I"/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi" -I"/usr/lib/x86_64-linux-gnu/openmpi/include" -I/usr/include/python3.8 -I/usr/include/hdf5/openmpi -I/usr/include/libxml2 -I/usr/include/tcl -I/usr/include/opencascade -I"/mnt/c/github/FDTD-main/parallel/include" -isystem /usr/include/jsoncpp

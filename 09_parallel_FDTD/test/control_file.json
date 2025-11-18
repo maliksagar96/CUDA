@@ -1,0 +1,19 @@
+{
+  "filename": "square_1m.STEP",
+  "frequency":3e8,
+  "Iterations":4001,
+  "data_capture_interval":20,
+  "domain_region":[-2,-2,2,2],
+  "source_point":[1.0, 1.0],
+  "cells_per_wavelength":100,
+  "amplitude":10,
+  "CFL":0.5,
+  "pml_region": 1,
+  "source_type":"sin",
+  "pulse_delay": 50,
+  "pulse_width": 1,
+  "sigma_scale":1000,
+  "grading_exponent":3,
+  "kappa_max":5,
+  "a_max":0.1
+}

@@ -1,0 +1,1 @@
+/opt/nvidia/hpc_sdk/Linux_x86_64/2025/cuda/12.9/bin/nvcc -forward-unknown-to-host-compiler -Xcompiler=-fPIC -Wno-deprecated-gpu-targets -shared -dlink --options-file CMakeFiles/fdtd.dir/deviceObjects1.rsp -o CMakeFiles/fdtd.dir/cmake_device_link.o --options-file CMakeFiles/fdtd.dir/deviceLinkLibs.rsp
