@@ -1,0 +1,84 @@
+CUDA Fundamentals
+
+Que 1 - What is concurrency and parallelism?
+Ans - concurrency is running multiple tasks at once and switching between different tasks. This can seem parallel but is not parallel truly. 
+parallelism on the other hand is running multiple task in parallel. 
+
+Que 2 - What is the syntax of kernel launch?
+Ans - kernel_name<<<blocks, threadsperblock>>>(args)
+
+Que 3 - How do you calculate the threadindex in a 1D system?
+Ans - threadID = offset + threadId.x;
+offset = blockDim.x * blockIdx.x;
+
+Que 4 - How do you calculate the global threadid in a 2D system?
+Ans - global_id = row_offset + block_offset + threadIdx.x;
+row_offset = gridDim.x * blockDim.x * blockIdx.y;
+block_offset = blockIdx.x * blockDim.x;
+
+The variable gridDim is used for the size of the block and the blockDim is used for number of threads in a block. 
+
+Que 6 - You have a 1D array of size N. The kernel is launched with a 1D grid and 1D blocks. Write the formula for the global thread index that each thread should use to access one element.
+Ans - gid = blockIdx.x * blockDim.x + threadIdx.x;
+
+Que 7 - You have a 1D array, but the kernel is launched with a 2D grid and 1D blocks. Each thread must still process exactly one element of the 1D array. How do you compute a single linear global index using blockIdx.x, blockIdx.y, and threadIdx.x?
+Ans - gid = (blockIdx.y * gridDim.x + blockIdx.x)*blockDim.x + threadIdx.x;
+
+Que 8 - You have a 2D matrix A of size M × N stored in row-major order. The kernel uses a 2D grid and 2D blocks. Each thread handles one element A[i][j]. Write expressions for i and j.
+Ans - i = blockIdx.y * blockDim.y + threadIdx.y;
+j = blockIdx.x * blockDim.x + threadIdx.x;
+
+Que 9 - What would the grid and block dims look like in the main program?
+Ans - threads=16, dim3 block(threads, threads), dim3 grid((N + threads - 1)/threads, (M + threads - 1)/threads).
+
+Que 10 - Same 2D matrix M × N, but now the kernel is launched with a 1D grid and 1D blocks. Each thread still processes one matrix element. How do you compute i and j from a single global thread index?
+Ans -  gid = blockIdx.x*blockDim.x + threadIdx.x;
+i = gid/N
+j = gid%N
+
+Que 11 -  You have a 3D data volume of size Nx × Ny × Nz. The kernel uses a 3D grid and 3D blocks. Each thread processes one element. Write expressions for (i, j, k).
+Ans - i = blockIdx.y * blockDim.y + threadIdx.y;
+j = blockIdx.x * blockDim.x + threadIdx.x;
+k = blockIdx.z * blockDim.z + threadIdx.z;
+
+Que 12 - Explain how array addition will be memory bound?
+And - There are 2 load statements then 1 add, and then 1 store. So 3 load/store actions and 1 computation. This is very low arithematic intensity. 
+
+Que 13 - How to observe warp divergence using nsight compute?
+
+Que 14 - Can branch efficiency be seen using nsight compute?
+Ans - 
+
+Que 15 - Can nsight compute tell if the array addition code is compute bound or memory bound. How? 
+Ans - SM throughput is low but every memory throughput is very high. 
+
+Que 16 - What is occupancy?
+Ans - Occupancy = Active warps / Max allowed warps
+
+Que 17 - What are the factors which decide the occupancy?
+Ans - Registers used per thread. 
+Shared memory of used per block. 
+Granularity constraint. 
+Lets see all of these through the following example. 
+
+Que 18 - Our kernel uses 48 registers per thread, 4096 bytes of SMem per block. Find the occupancy for GTX 1650. 
+Ans - Lets say registers per SM = 65536, registers per warp = 32 * 48 = 1536, allowed warps = 65536/1536 = 42. But the Granularity is 4. Meaning 4 warps can be scheduled and no less. Hence 40 active warps. 
+Shared memory per block = 98304 bytes. Active blocks = 98304/4096 = 24. Active warps = warps per sm * active blocks per SM = 96. So the max warps are limited by the registers used. 
+
+max warps allowed = 64. Occupancy = 40/64 = 63%
+
+Que 19 - How do we find how many registers are used per kernel?
+Ans -nvcc -arch=sm_75 -Xptxas -v 03_sum_3_array.cu -o sum3
+using the PTX assembler. 
+
+Que 20 - When analysing programs using nsight compute what are some of the most important metrics one should observe?
+Ans - First of all to see if it is memory bound or compute bound. 
+1) Achieved Occupancy - should be 50-70%. 
+2) SM throughput. High SM utilization - Compute bound. Low SM utilization - Something is stalling. 
+3) Memory throughput - One of the most critical metrics. High bandwidth utilization - (70 - 90)% => memory bound. Low bandwidth + low compute => inefficient access pattern. 
+4) Memory access inefficiency 
+5) arithematic intensity - low => memory bound, high compute bound. 
+6) Warp stall reasons
+
+Que 21 - 
+

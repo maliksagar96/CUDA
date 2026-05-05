@@ -1,0 +1,19 @@
+==PROF== Connected to process 26953 (/home/sagar/Documents/CUDA/11_nsight_compute_tutorial/03_shared)
+Results match ✔
+==PROF== Disconnected from process 26953
+"ID","Process ID","Process Name","Host Name","Kernel Name","Context","Stream","Block Size","Grid Size","Device","CC","Section Name","Metric Name","Metric Unit","Metric Value"
+"0","26953","03_shared","127.0.0.1","gpu_mat_mult(const float *, const float *, float *, int, int, int)","1","7","(16, 16, 1)","(64, 64, 1)","0","7.5","Command line profiler metrics","dram__bytes.sum.per_second","byte/s","41,56,06,43,892.37"
+"0","26953","03_shared","127.0.0.1","gpu_mat_mult(const float *, const float *, float *, int, int, int)","1","7","(16, 16, 1)","(64, 64, 1)","0","7.5","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","26.05"
+"0","26953","03_shared","127.0.0.1","gpu_mat_mult(const float *, const float *, float *, int, int, int)","1","7","(16, 16, 1)","(64, 64, 1)","0","7.5","Command line profiler metrics","gpu__global_load_efficiency.avg.pct","","n/a"
+"0","26953","03_shared","127.0.0.1","gpu_mat_mult(const float *, const float *, float *, int, int, int)","1","7","(16, 16, 1)","(64, 64, 1)","0","7.5","Command line profiler metrics","gpu__global_store_efficiency.avg.pct","","n/a"
+"0","26953","03_shared","127.0.0.1","gpu_mat_mult(const float *, const float *, float *, int, int, int)","1","7","(16, 16, 1)","(64, 64, 1)","0","7.5","Command line profiler metrics","gpu__time_duration.sum","ns","68,82,144"
+"0","26953","03_shared","127.0.0.1","gpu_mat_mult(const float *, const float *, float *, int, int, int)","1","7","(16, 16, 1)","(64, 64, 1)","0","7.5","Command line profiler metrics","l1tex__t_sectors_pipe_lsu_mem_global_op_ld_lookup_hit_rate.pct","","n/a"
+"0","26953","03_shared","127.0.0.1","gpu_mat_mult(const float *, const float *, float *, int, int, int)","1","7","(16, 16, 1)","(64, 64, 1)","0","7.5","Command line profiler metrics","lts__t_sectors_srcunit_tex_op_read_lookup_hit_rate.pct","","n/a"
+"0","26953","03_shared","127.0.0.1","gpu_mat_mult(const float *, const float *, float *, int, int, int)","1","7","(16, 16, 1)","(64, 64, 1)","0","7.5","Command line profiler metrics","sm__cycles_active.avg.pct_of_peak_sustained_elapsed","%","99.84"
+"0","26953","03_shared","127.0.0.1","gpu_mat_mult(const float *, const float *, float *, int, int, int)","1","7","(16, 16, 1)","(64, 64, 1)","0","7.5","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","74.48"
+"0","26953","03_shared","127.0.0.1","gpu_mat_mult(const float *, const float *, float *, int, int, int)","1","7","(16, 16, 1)","(64, 64, 1)","0","7.5","Command line profiler metrics","sm__warps_active.avg.pct_of_peak_sustained_active","%","99.42"
+"0","26953","03_shared","127.0.0.1","gpu_mat_mult(const float *, const float *, float *, int, int, int)","1","7","(16, 16, 1)","(64, 64, 1)","0","7.5","Command line profiler metrics","smsp__warp_issue_stalled_execution_dependency.avg.pct","","n/a"
+"0","26953","03_shared","127.0.0.1","gpu_mat_mult(const float *, const float *, float *, int, int, int)","1","7","(16, 16, 1)","(64, 64, 1)","0","7.5","Command line profiler metrics","smsp__warp_issue_stalled_memory_dependency.avg.pct","","n/a"
+"0","26953","03_shared","127.0.0.1","gpu_mat_mult(const float *, const float *, float *, int, int, int)","1","7","(16, 16, 1)","(64, 64, 1)","0","7.5","Command line profiler metrics","smsp__warp_issue_stalled_memory_throttle.avg.pct","","n/a"
+"0","26953","03_shared","127.0.0.1","gpu_mat_mult(const float *, const float *, float *, int, int, int)","1","7","(16, 16, 1)","(64, 64, 1)","0","7.5","Command line profiler metrics","smsp__warps_eligible.avg.per_cycle","","n/a"
+"0","26953","03_shared","127.0.0.1","gpu_mat_mult(const float *, const float *, float *, int, int, int)","1","7","(16, 16, 1)","(64, 64, 1)","0","7.5","Command line profiler metrics","smsp__warps_issued.avg.per_cycle","","n/a"
