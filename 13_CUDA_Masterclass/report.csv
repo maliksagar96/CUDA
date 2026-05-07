@@ -1,21 +1,16 @@
-==PROF== Connected to process 25734 (/home/sagar/Documents/CUDA/13_CUDA_Masterclass/sum2)
+==PROF== Connected to process 9180 (/home/sagar/Documents/CUDA/13_CUDA_Masterclass/sum2)
 Results match.
-CPU execution time = 0.003986 seconds.
-GPU execution time = 0.555573 seconds.
-***SPEED UP = 0.00717457
-==PROF== Disconnected from process 25734
+CPU execution time = 0.003945 seconds.
+GPU execution time = 0.604227 seconds.
+***SPEED UP = 0.006529
+==PROF== Disconnected from process 9180
 "ID","Process ID","Process Name","Host Name","Kernel Name","Context","Stream","Block Size","Grid Size","Device","CC","Section Name","Metric Name","Metric Unit","Metric Value"
-"0","25734","sum2","127.0.0.1","add_array(int *, int *, int *, int)","1","7","(512, 1, 1)","(2048, 1, 1)","0","7.5","Command line profiler metrics","dram__bytes.sum.per_second","byte/s","1,45,40,78,59,595.57"
-"0","25734","sum2","127.0.0.1","add_array(int *, int *, int *, int)","1","7","(512, 1, 1)","(2048, 1, 1)","0","7.5","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","91.39"
-"0","25734","sum2","127.0.0.1","add_array(int *, int *, int *, int)","1","7","(512, 1, 1)","(2048, 1, 1)","0","7.5","Command line profiler metrics","gpu__global_load_efficiency.avg.pct","","n/a"
-"0","25734","sum2","127.0.0.1","add_array(int *, int *, int *, int)","1","7","(512, 1, 1)","(2048, 1, 1)","0","7.5","Command line profiler metrics","gpu__global_store_efficiency.avg.pct","","n/a"
-"0","25734","sum2","127.0.0.1","add_array(int *, int *, int *, int)","1","7","(512, 1, 1)","(2048, 1, 1)","0","7.5","Command line profiler metrics","gpu__time_duration.sum","ns","83,872"
-"0","25734","sum2","127.0.0.1","add_array(int *, int *, int *, int)","1","7","(512, 1, 1)","(2048, 1, 1)","0","7.5","Command line profiler metrics","l1tex__t_sectors_pipe_lsu_mem_global_op_ld_lookup_hit_rate.pct","","n/a"
-"0","25734","sum2","127.0.0.1","add_array(int *, int *, int *, int)","1","7","(512, 1, 1)","(2048, 1, 1)","0","7.5","Command line profiler metrics","lts__t_sectors_srcunit_tex_op_read_lookup_hit_rate.pct","","n/a"
-"0","25734","sum2","127.0.0.1","add_array(int *, int *, int *, int)","1","7","(512, 1, 1)","(2048, 1, 1)","0","7.5","Command line profiler metrics","sm__cycles_active.avg.pct_of_peak_sustained_elapsed","%","95.76"
-"0","25734","sum2","127.0.0.1","add_array(int *, int *, int *, int)","1","7","(512, 1, 1)","(2048, 1, 1)","0","7.5","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","16.03"
-"0","25734","sum2","127.0.0.1","add_array(int *, int *, int *, int)","1","7","(512, 1, 1)","(2048, 1, 1)","0","7.5","Command line profiler metrics","sm__warps_active.avg.pct_of_peak_sustained_active","%","84.42"
-"0","25734","sum2","127.0.0.1","add_array(int *, int *, int *, int)","1","7","(512, 1, 1)","(2048, 1, 1)","0","7.5","Command line profiler metrics","smsp__warp_issue_stalled_memory_dependency.avg.pct","","n/a"
-"0","25734","sum2","127.0.0.1","add_array(int *, int *, int *, int)","1","7","(512, 1, 1)","(2048, 1, 1)","0","7.5","Command line profiler metrics","smsp__warp_issue_stalled_memory_throttle.avg.pct","","n/a"
-"0","25734","sum2","127.0.0.1","add_array(int *, int *, int *, int)","1","7","(512, 1, 1)","(2048, 1, 1)","0","7.5","Command line profiler metrics","smsp__warps_eligible.avg.per_cycle","","n/a"
-"0","25734","sum2","127.0.0.1","add_array(int *, int *, int *, int)","1","7","(512, 1, 1)","(2048, 1, 1)","0","7.5","Command line profiler metrics","smsp__warps_issued.avg.per_cycle","","n/a"
+"0","9180","sum2","127.0.0.1","add_array(int *, int *, int *, int)","1","7","(512, 1, 1)","(2048, 1, 1)","0","7.5","Command line profiler metrics","dram__bytes.sum.per_second","byte/s","1,45,20,39,72,498.09"
+"0","9180","sum2","127.0.0.1","add_array(int *, int *, int *, int)","1","7","(512, 1, 1)","(2048, 1, 1)","0","7.5","Command line profiler metrics","dram__throughput.avg.pct_of_peak_sustained_elapsed","%","90.54"
+"0","9180","sum2","127.0.0.1","add_array(int *, int *, int *, int)","1","7","(512, 1, 1)","(2048, 1, 1)","0","7.5","Command line profiler metrics","gpu__time_duration.sum","ns","83,776"
+"0","9180","sum2","127.0.0.1","add_array(int *, int *, int *, int)","1","7","(512, 1, 1)","(2048, 1, 1)","0","7.5","Command line profiler metrics","sm__cycles_active.avg.pct_of_peak_sustained_elapsed","%","95.01"
+"0","9180","sum2","127.0.0.1","add_array(int *, int *, int *, int)","1","7","(512, 1, 1)","(2048, 1, 1)","0","7.5","Command line profiler metrics","sm__throughput.avg.pct_of_peak_sustained_elapsed","%","15.88"
+"0","9180","sum2","127.0.0.1","add_array(int *, int *, int *, int)","1","7","(512, 1, 1)","(2048, 1, 1)","0","7.5","Command line profiler metrics","sm__warps_active.avg.pct_of_peak_sustained_active","%","85.62"
+"0","9180","sum2","127.0.0.1","add_array(int *, int *, int *, int)","1","7","(512, 1, 1)","(2048, 1, 1)","0","7.5","Command line profiler metrics","smsp__inst_executed.avg.per_cycle_active","inst/cycle","0.08"
+"0","9180","sum2","127.0.0.1","add_array(int *, int *, int *, int)","1","7","(512, 1, 1)","(2048, 1, 1)","0","7.5","Command line profiler metrics","smsp__warps_eligible.avg.per_cycle","","n/a"
+"0","9180","sum2","127.0.0.1","add_array(int *, int *, int *, int)","1","7","(512, 1, 1)","(2048, 1, 1)","0","7.5","Command line profiler metrics","smsp__warps_issued.avg.per_cycle","","n/a"

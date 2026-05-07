@@ -23,7 +23,7 @@ void cpu_add(int *a, int *b, int *c, int *d, int size) {
 
 int main() {
 
-  int size = 1 << 22;
+  int size = 1 << 24;
   int block_size = 1024;
 
   size_t byteSize = size * sizeof(int);

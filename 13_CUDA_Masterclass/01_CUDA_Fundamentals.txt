@@ -47,7 +47,7 @@ And - There are 2 load statements then 1 add, and then 1 store. So 3 load/store 
 Que 13 - How to observe warp divergence using nsight compute?
 
 Que 14 - Can branch efficiency be seen using nsight compute?
-Ans - 
+Ans - Yes it can be seen in the source counters section at the bottom. 
 
 Que 15 - Can nsight compute tell if the array addition code is compute bound or memory bound. How? 
 Ans - SM throughput is low but every memory throughput is very high. 
@@ -75,10 +75,16 @@ Que 20 - When analysing programs using nsight compute what are some of the most 
 Ans - First of all to see if it is memory bound or compute bound. 
 1) Achieved Occupancy - should be 50-70%. 
 2) SM throughput. High SM utilization - Compute bound. Low SM utilization - Something is stalling. 
-3) Memory throughput - One of the most critical metrics. High bandwidth utilization - (70 - 90)% => memory bound. Low bandwidth + low compute => inefficient access pattern. 
-4) Memory access inefficiency 
-5) arithematic intensity - low => memory bound, high compute bound. 
-6) Warp stall reasons
+3) Memory throughput(DRAM throughput) - One of the most critical metrics. High bandwidth utilization - (70 - 90)% => memory bound. Low bandwidth + low compute => inefficient access pattern. 
+4) GPU time duration.
+5) Eligible warps per cycle
+6) Issued warps per cycle
+7) Memory bandwidth
+8) Instructions per cycle
+
+Here is the command to execute them, just change the executable name
+
+ncu --kernel-name add_array --replay-mode application --metrics gpu__time_duration.sum,sm__cycles_active.avg.pct_of_peak_sustained_elapsed,sm__throughput.avg.pct_of_peak_sustained_elapsed,dram__throughput.avg.pct_of_peak_sustained_elapsed,dram__bytes.sum.per_second,sm__warps_active.avg.pct_of_peak_sustained_active,smsp__warps_eligible.avg.per_cycle,smsp__warps_issued.avg.per_cycle,smsp__inst_executed.avg.per_cycle_active,smsp__thread_inst_executed_per_inst_executed.ratio ./sum3
 
 Que 21 - 
 
