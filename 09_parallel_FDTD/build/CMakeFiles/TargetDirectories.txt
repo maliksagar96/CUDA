@@ -1,3 +1,0 @@
-/mnt/c/github/FDTD-main/parallel/build/CMakeFiles/fdtd.dir
-/mnt/c/github/FDTD-main/parallel/build/CMakeFiles/edit_cache.dir
-/mnt/c/github/FDTD-main/parallel/build/CMakeFiles/rebuild_cache.dir
