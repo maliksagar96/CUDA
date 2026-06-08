@@ -1,7 +1,7 @@
 This document is based on the 24 Hour course by Prateek Shukla on FreeCodeCamp.org on youtube. 
 
 Que 1 - What is TMA?
-Ans - TMA was introduced in the Hopper architecture. 
+Ans - TMA was introduced in the Hopper architecture. Tensor memory accelerator. 
 
 
 

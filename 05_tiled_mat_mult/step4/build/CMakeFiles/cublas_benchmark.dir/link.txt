@@ -1,1 +1,0 @@
-/usr/bin/g++ CMakeFiles/cublas_benchmark.dir/04_cublas_benchmark.cu.o CMakeFiles/cublas_benchmark.dir/cmake_device_link.o -o cublas_benchmark  /usr/local/cuda/lib64/libcudart.so /usr/local/cuda/lib64/libcublas.so -lcudadevrt -lcudart_static -lrt -lpthread -ldl  -L"/usr/local/cuda/targets/x86_64-linux/lib/stubs" -L"/usr/local/cuda/targets/x86_64-linux/lib"
