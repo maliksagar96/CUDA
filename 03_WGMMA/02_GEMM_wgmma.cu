@@ -1,31 +1,30 @@
 /*
-
-
 */
-
 
 #include <iostream>
 #include <vector>
 #include <cuda.h>
 #include <mma.h>
 #include <cuda_fp16.h>
+#include <cassert>
+#include <cmath>
+#include <ctime>
 
+
+using namespace std;
 using namespace nvcuda;
 
-void cpu_implementation(vector<int> &matA, vector<int> &matB, vector<int> &matC, int P, int Q, int R) {
-
-	//A is PxQ and B is QxR
-	for(int i = 0;i<P;i++) {
-		for(int j = 0;j<R;j++) {            
-			for(int k = 0;k < Q;k++) {
-				//cij = aik*bkj
-				matC[i * R + j] += matA[Q*i + k] * matB[R * k + j]; 
-			}
-		}
-	}
+void cpu_implementation(vector<int> &matA,vector<int> &matB,vector<int> &matC,int M,int K,int N)
+{
+  for(int i=0;i<M;i++) {
+    for(int j=0;j<N;j++) {
+      matC[i*N+j]=0;
+      for(int k=0;k<K;k++) {
+        matC[i*N+j]+=matA[i*K+k]*matB[k*N+j];
+      }
+    }
+  }
 }
-
-
 
 __global__ void mma_kernel(const half *A,const half *B,float *C,int M,int N,int K) {
   
@@ -61,42 +60,56 @@ int main() {
   const int N = 2048;
   const int K = 2048;
 
+  vector<int> cpuA(M*K), cpuB(K*N), cpuC(M*N, 0);
+  vector<float> gpuResult(M*N);
+  srand(time(0));
+
+  for(size_t i = 0;i<cpuA.size();i++) {
+    cpuA[i] = rand()%10;
+  }
+
+  for(size_t i = 0;i<cpuB.size();i++) {
+    cpuB[i] = rand()%10;
+  }
+
   std::vector<half> h_A(M*K);
   std::vector<half> h_B(K*N);
   std::vector<float> h_C(M*N);
 
-  for(int i=0;i<M*K;i++)
-    h_A[i]=__float2half(1.0f);
+  for(size_t i=0;i<cpuA.size();i++)
+    h_A[i] = __float2half(float(cpuA[i]));
 
-  for(int i=0;i<K*N;i++)
-    h_B[i]=__float2half(2.0f);
+  for(size_t i=0;i<cpuB.size();i++)
+    h_B[i] = __float2half(float(cpuB[i]));
 
   half *d_A,*d_B;
   float *d_C;
 
-  cudaMalloc(&d_A,M*K*sizeof(half));
-  cudaMalloc(&d_B,K*N*sizeof(half));
-  cudaMalloc(&d_C,M*N*sizeof(float));
+  cudaMalloc(&d_A, M * K * sizeof(half));
+  cudaMalloc(&d_B, K * N * sizeof(half));
+  cudaMalloc(&d_C, M * N * sizeof(float));
 
-  cudaMemcpy(d_A,h_A.data(),M*K*sizeof(half),cudaMemcpyHostToDevice);
-  cudaMemcpy(d_B,h_B.data(),K*N*sizeof(half),cudaMemcpyHostToDevice);
+  cudaMemcpy(d_A, h_A.data(), M*K*sizeof(half), cudaMemcpyHostToDevice);
+  cudaMemcpy(d_B, h_B.data(), K*N*sizeof(half), cudaMemcpyHostToDevice);
 
   dim3 grid(N/16,M/16);
   dim3 block(32);
 
-  mma_kernel<<<grid,block>>>(d_A,d_B,d_C,M,N,K);
+  //cpu computation
+  cpu_implementation(cpuA, cpuB, cpuC, M, K, N);
+
+  //gpu computation
+  mma_kernel<<<grid,block>>>(d_A, d_B, d_C, M, N, K);
   cudaDeviceSynchronize();
-  cudaMemcpy(h_C.data(),d_C,M*N*sizeof(float),cudaMemcpyDeviceToHost);
+  cudaMemcpy(gpuResult.data(),d_C,M*N*sizeof(float),cudaMemcpyDeviceToHost);
 
-  std::cout<<"Top-left 8x8 block of C\n";
+  float maxAbsError = 0.0f;
 
-  for(int i=0;i<8;i++) {
-    for(int j=0;j<8;j++)
-      std::cout<<h_C[i*N+j]<<" ";
-
-    std::cout<<"\n";
+  for(size_t i = 0;i<gpuResult.size();i++) {
+    maxAbsError = max(maxAbsError, fabs(gpuResult[i] - float(cpuC[i])));
   }
 
+  cout << "Max error = "<<maxAbsError<<".\n";
   cudaFree(d_A);
   cudaFree(d_B);
   cudaFree(d_C);
