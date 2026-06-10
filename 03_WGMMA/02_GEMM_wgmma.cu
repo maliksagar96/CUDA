@@ -26,6 +26,12 @@ void cpu_implementation(vector<int> &matA,vector<int> &matB,vector<int> &matC,in
   }
 }
 
+
+/*
+  A = MxK
+  B = KxN
+  C = MxN
+*/
 __global__ void mma_kernel(const half *A,const half *B,float *C,int M,int N,int K) {
   
   int tile_row = blockIdx.y;
@@ -37,9 +43,9 @@ __global__ void mma_kernel(const half *A,const half *B,float *C,int M,int N,int 
   wmma::fragment<wmma::matrix_a,16,16,16,half,wmma::row_major> a_frag;
   wmma::fragment<wmma::matrix_b,16,16,16,half,wmma::row_major> b_frag;
   wmma::fragment<wmma::accumulator,16,16,16,float> c_frag;
-
   wmma::fill_fragment(c_frag,0.0f);
 
+  //
   for(int k = 0; k < K; k += 16) {
 
     const half *A_tile = A + row*K + k;
