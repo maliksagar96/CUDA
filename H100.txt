@@ -1,9 +1,158 @@
 This document is based on the 24 Hour course by Prateek Shukla on FreeCodeCamp.org on youtube. 
 
-Que 1 - What is TMA?
-Ans - TMA was introduced in the Hopper architecture. Tensor memory accelerator. 
+Lesson 1
+
+Que 1 - How does the architecture of the H100 look like?
+Ans - a) 2 Form factor. PCIe(300 W) and SXM(700 W). SXM for gpu to gpu commuincation. 
+b) 80 GB HBM3 memory. (3.35 GB/s)
+c) 132 SMs
+d) 528 Tensor cores(4 per SM) (4th generation.)
+e) Transformer engine. 
+f) 4th Gen NVLink interconnect. 900 GB/s.
+g) Massive 50MB L2 cache. 
+h) 5 HBM3 stacks and 10 memory controllers. 
+
+Que 2 - What is TMA?
+Ans - TMA was introduced in the Hopper architecture. Tensor memory accelerator. This unit is to offload tensor copy operations from the SMs. 
+
+que 3 - What is async copy in H100?
+Ans - While computing the tile n, it loads the data tile n+1. This helps hiding latency. 
+
+Que 4 -  What are tensor cores?
+Ans - Units made specifically for MMA(matrix mutiply accumulate).
+
+Que 5 - Were fp8 supported in A100?
+Ans - No. Tensor cores in H100 have fp8 support because of dense matrix multiplication support. 
+
+Que 6 - What is GIGAthread engine?
+Ans - Gigathread engine is responsible for handing out thread blocks(CTA - Cooperative thread array) to SMs. 
+In H100 it also understands about the thread block clusters which is a new addition to Hopper architecture over Amphere.
+
+Que 7 - What is GPC?
+Ans - A group of 18 SMs. Distribute shared memory(DSHmem)  is shared among  a GPC. 
+
+Que 8 - What is TPC?
+Ans - Texture processing cluster. Group of 2 SMs. The communication between them is really fast. 
+
+Que 9 - How does a single SM look like?
+Ans - An SM is divided into 4 SM sub partition(SMSP). Each is identical to the other. Each SM has its own TMA unit, 256 KB L1 Data/Shared memory cache.  
+A single SMSP has 1 tensor core, L0 cache, warp scheduler, dispatch unit, local registers, 1 SFU, 32 fp32, 16 int32 units, 16 fp64 units, 8 load store units.  
+
+Que 10 - What is CUDA core?
+Ans - Generally one fp32 unit is called a cuda core. So one SM has 128 CUDA cores. 132 SM will have 132 x 128 = 16896 cuda cores. 
+
+Que 11 - What is static and dynamic shmem allocation?
+Ans - static shared memory so limited to 48KB maintain compatibility with the older architectures. If one need to access more shared memory extern keyword has to be used. 
+
+Que 12 - How many registers per SM?
+Ans - 256 KB per SM. Each register is of size 32 bit. 2 fp16 or 4 fp8 can fit into one register. 
+
+Que 13 - When are registers allocated?
+And - During compile time and not during runtime. Prior to CUDA 13.0 the registers spilling was handled by global memory. From CUDA 13.0 first they are accomodated in SHmem, if not possible then global memory.
+
+Que 14 - How does the WGMMA layout look like?
+Ans - Matrix A - Stored shared memory or registers. 
+Matrix B - Must be stored in SHmem and not registers. 
+Matrix C - Distributed across 4 warps in registers. (4 waprs that's why warp group in WGMMA)
+
+Que 15 - What is the function of warp scheduler?
+Ans - Manages instructions issued to warps. Selects ready warps for instruction issue in each cycle. Handles warp-level branching and divergence. 
+
+Que 16 - What is PTX and SASS?
+Ans - Flow is like this:
+CUDA C++ -> PTX -> SASS -> GPU execution. 
 
 
+/*******************************************************************************/
+            LESSON 2
+
+Que 1 - What is multicast? 
+Ans - Suppose 8 thread block clusters need same data. It can be now multicasted. Instead of making 8 copies hardware can now perform a single copy and distribute the data among the 8 thread block clusters. 
+
+Que 2 - In PTX we see a lot of % signs. What are those?
+Ans - % sign means the registers. add.f32 %r1, %r2, %r3.  This means r1 = r2 + r3
+
+Que 3 - What is the general format for PTX instruction?
+Ans - asm volatile("ptx instruction":output operands:input operands:clobbers)
+Volatile is written so that compiler doesn't delete it or change the order. 
+
+__device__ int add_one(int x)
+{
+  int y;
+  asm volatile("add.s32 %0, %1, 1;": "=r"(y): "r"(x));
+  return y;
+}
+
+%0 and %1 are placeholders. They will be replaced by registers in the GPU. 
+Store the value of x+1 in register and associate the value of the register with y, that's what "=r"(y) means. 
+%0 will take y and %1 will take x. They are coming in that order, hence they will be written in that order. There is no clobber here. 
+Clobbers are those values which are modified by the assembly code written by us. It is like telling the compiler "Please don't trust the value of the clobber varaible".
 
 
+lets just say if the clobbers are used. 
 
+asm volatile(
+  "add.s32 %0, %1, 1;"
+  : "=r"(y)
+  : "r"(x)
+  : "memory"
+);
+
+this is saying that values in the memory has been changed and don't trust the cached values. 
+
+Que 4 - What are the constraints?
+Ans 
+For CUDA inline PTX, the most common constraints are:
+
+`"r"` → 32-bit integer register (`int`, `unsigned int`)
+
+`"l"` → 64-bit integer register (`long long`, pointers on 64-bit systems)
+
+`"f"` → 32-bit floating-point register (`float`)
+
+`"d"` → 64-bit floating-point register (`double`)
+
+`"h"` → 16-bit integer register (`short`, `unsigned short`)
+
+Que 5 - What are the most common state spaces?
+The most common PTX state spaces are:
+
+`.reg` — Registers private to each thread.
+
+`.shared` — Shared memory visible to all threads in a block (and accessible across a cluster in Hopper with special instructions).
+
+`.global` — Global memory visible to all threads and all kernels.
+
+`.local` — Per-thread local memory, typically used when registers spill or for large thread-private arrays.
+
+`.const` — Read-only constant memory cached on the GPU.
+
+`.param` — Kernel and function parameter space used for passing arguments.
+
+These are the state spaces you'll encounter most often when reading PTX.
+
+Que 6 - What is bf816
+Ans - brain float 16 has 1 sign bit, 8 exponent bits and 7 mantissa bits. 
+Keeps the range of fp32 but the with the cost of numerical precision. 
+
+Que 7 - What are e4m3 and e5m2?
+Ans - 4 exponent bits 3 mantissa bits and 1 sign bit. 
+    e5m2 is ...
+
+
+/*******************************************************************************/
+            LESSON 3
+
+Que 1 - What is read after write error(RAW)?
+Ans - Read after write can happen like
+I1 : R1 = 20
+I2 : R2 = R1 + 5
+If I2 fetches R1 before I1 is complete. This is read after write hazard. 
+
+Que 2 - What is write after read?
+Ans - I1 : R1 = 10
+block
+I2: R2 = R1 + 5
+I3: R1 = 20
+
+So in WAR hazard it it may read I3 first and then write R2. This would be wrong.
