@@ -156,3 +156,65 @@ I2: R2 = R1 + 5
 I3: R1 = 20
 
 So in WAR hazard it it may read I3 first and then write R2. This would be wrong.
+
+Que 3 - What are proxies in CUDA?
+Ans - Proxy is a term used to distinguish who is doing memory ops. 
+
+Que 4 - What are fences used for?
+Ans - Fences ensures that the memory operations are visible in the correct order. In cross proxy fences one proxy ensures that the memory updates that it is doing should be visible to the other proxy. 
+
+Que 5 - What are aquire and release fence?
+Ans - Producer uses release fence as it makes sure that the consumer sees all the data it has released. Consumer uses aquire fence and it makes sure that it is reading the latest data. 
+This is a handshake between them. The release and aqurie fences are handshakes. 
+
+Que 6 - What are release semantics?
+Ans - Whenever a release command is used that means the commands before the .release command can be reordered for execution but no command can be reordered to execute after the release command. 
+For example
+
+write A
+write B 
+
+mbarrier.release
+
+----Reordering----
+write B
+write A 
+
+mbarrier.release 
+
+is fine
+
+but 
+
+write A 
+mbarrier.release
+write B
+
+this is illegal and can't happen. 
+
+
+
+/*******************************************************************************/
+            LESSON 4
+
+
+Que 1 - What is a descriptor?
+Ans - Descitor is a 128 byte object which stores the entire transfer state. 
+It contains - 
+a) memory base pointer
+b) tensor shape
+c) stride
+d) data type
+e) aligment and swizzling
+f) memory space
+g) order and rank
+h) optionally - tiling or interleaved layouts
+
+Que 2 - What is swizzling?
+Ans - Data is rearranged in such a way that reduced the shared memory bank conflicts.
+
+
+
+
+
+
