@@ -1,5 +1,5 @@
 /*
-  First check if there are 3 GPUs there or not.
+  First check if there are 4 GPUs there or not.
   Then it checks the bandwidht of all three pairs. 
   Then the protocol asks if the src gpu can access the memory of the destination GPU.
   Then we have to set the GPU on which we need to allocate memory. 
@@ -71,16 +71,16 @@ int main() {
   int ngpus;
   cudaGetDeviceCount(&ngpus);
 
-  if(ngpus < 3) {
-    cout << "Need at least 3 GPUs\n";
+  if(ngpus < 4) {
+    cout << "Need at least 4 GPUs\n";
     return 0;
   }
 
   size_t bytes = 256ULL * 1024 * 1024;
   cout << fixed << setprecision(2);
 
-  for(int src = 0; src < 3; src++) {
-    for(int dst = 0; dst < 3; dst++) {
+  for(int src = 0; src < 4; src++) {
+    for(int dst = 0; dst < 4; dst++) {
       if(src == dst)
         continue;
 
