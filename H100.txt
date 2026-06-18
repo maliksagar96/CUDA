@@ -214,6 +214,20 @@ Que 2 - What is swizzling?
 Ans - Data is rearranged in such a way that reduced the shared memory bank conflicts.
 
 
+/*******************************************************************************/
+            LESSON 5
+
+Que 1 - What is different in Hopper architecture regarding MMA?
+Ans - a) Tensor core operations are now fully asynchronous. Previously they were not asynchronous. Math instrcution is now non blocking. 
+b) Instead of one warp we now use warpgroups. This helps us to load much more larger tiles. 
+c) Tensor cores can now fetch data directly from the shared memory. In Amphere they have to be first loaded in registers.
+d) float8 support and sparse matrix.
+
+Que 2 - What are the locations of A,B,C and D in wgmma?
+Ans -  D = AxB + C 
+A = Register/Shared memory
+B = Shared memory
+C and D = Registers
 
 
 

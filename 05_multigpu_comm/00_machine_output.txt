@@ -14,4 +14,3 @@ Legend:
   PXB  = Connection traversing multiple PCIe bridges (without traversing the PCIe Host Bridge)
   PIX  = Connection traversing at most a single PCIe bridge
   NV#  = Connection traversing a bonded set of # NVLinks
-(main) root@C.41274004:/workspace$ 
